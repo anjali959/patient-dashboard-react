@@ -1,0 +1,42 @@
+{
+  "info": {
+    "_postman_id": "f3ab1a11-cc4e-4f40-9aa3-b2a2b33b9a22",
+    "name": "Patient Backend API (Jessica Taylor)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Fetch and Save Jessica Data (From Coalition API)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{URL}}/api/patient/fetch",
+          "host": ["{{URL}}"],
+          "path": ["api", "patient", "fetch"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Jessica Data (From Database)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{URL}}/api/patient",
+          "host": ["{{URL}}"],
+          "path": ["api", "patient"]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "URL",
+      "value": "http://localhost:5000",
+      "type": "string"
+    }
+  ]
+}
