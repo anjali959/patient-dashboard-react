@@ -1,0 +1,7 @@
+export default function Footer() {
+  return (
+    <div className="text-center py-3" style={{ background: "#f1f3f5" }}>
+      <small>© {new Date().getFullYear()} Demo</small>
+    </div>
+  );
+}
