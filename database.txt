@@ -1,0 +1,151 @@
+-- =========================================================
+-- DATABASE  : patient_db
+-- AUTHOR    : Anjali Yadav
+-- PURPOSE   : To store patient profile, diagnosis history,
+--             diagnostic list, and lab results data.
+-- =========================================================
+
+-- 1️⃣ Create Database
+CREATE DATABASE IF NOT EXISTS patient_db;
+USE patient_db;
+
+-- =========================================================
+-- 2️⃣ Create Table: patients
+-- =========================================================
+CREATE TABLE IF NOT EXISTS patients (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    gender VARCHAR(20),
+    age INT,
+    profile_picture TEXT,
+    date_of_birth DATE,
+    phone_number VARCHAR(50),
+    emergency_contact VARCHAR(50),
+    insurance_type VARCHAR(100)
+);
+
+-- =========================================================
+-- 3️⃣ Create Table: diagnosis_history
+-- =========================================================
+CREATE TABLE IF NOT EXISTS diagnosis_history (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    patient_id INT,
+    month VARCHAR(20),
+    year INT,
+    systolic_value INT,
+    systolic_level VARCHAR(50),
+    diastolic_value INT,
+    diastolic_level VARCHAR(50),
+    heart_rate INT,
+    respiratory_rate INT,
+    temperature FLOAT,
+    FOREIGN KEY (patient_id) REFERENCES patients(id)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- =========================================================
+-- 4️⃣ Create Table: diagnostic_list
+-- =========================================================
+CREATE TABLE IF NOT EXISTS diagnostic_list (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    patient_id INT,
+    name VARCHAR(100),
+    description TEXT,
+    status VARCHAR(50),
+    FOREIGN KEY (patient_id) REFERENCES patients(id)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- =========================================================
+-- 5️⃣ Create Table: lab_results
+-- =========================================================
+CREATE TABLE IF NOT EXISTS lab_results (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    patient_id INT,
+    result_name VARCHAR(100),
+    FOREIGN KEY (patient_id) REFERENCES patients(id)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- =========================================================
+-- 6️⃣ Insert Sample Data
+-- =========================================================
+
+-- 👩 Jessica Taylor
+INSERT INTO patients
+(name, gender, age, profile_picture, date_of_birth, phone_number, emergency_contact, insurance_type)
+VALUES
+('Jessica Taylor', 'Female', 28, 'https://fedskillstest.ct.digital/4.png', '1996-08-23', '(415) 555-1234', '(415) 555-5678', 'Sunrise Health Assurance');
+
+SET @jessica_id = LAST_INSERT_ID();
+
+INSERT INTO diagnosis_history
+(patient_id, month, year, systolic_value, systolic_level, diastolic_value, diastolic_level, heart_rate, respiratory_rate, temperature)
+VALUES
+(@jessica_id, 'March', 2024, 160, 'Higher than Average', 78, 'Lower than Average', 78, 20, 98.6),
+(@jessica_id, 'April', 2024, 150, 'Higher than Average', 82, 'Normal', 80, 21, 98.7),
+(@jessica_id, 'February', 2024, 119, 'Normal', 73, 'Lower than Average', 99, 25, 98.0),
+(@jessica_id, 'January', 2024, 128, 'Higher than Average', 86, 'Lower than Average', 82, 22, 103.0);
+
+INSERT INTO diagnostic_list (patient_id, name, description, status)
+VALUES
+(@jessica_id, 'Hypertension', 'Chronic high blood pressure', 'Under Observation'),
+(@jessica_id, 'Type 2 Diabetes', 'Insulin resistance and elevated blood sugar', 'Cured'),
+(@jessica_id, 'Asthma', 'Recurrent episodes of bronchial constriction', 'Inactive'),
+(@jessica_id, 'Osteoarthritis', 'Degenerative joint disease', 'Untreated');
+
+INSERT INTO lab_results (patient_id, result_name)
+VALUES
+(@jessica_id, 'Blood Tests'),
+(@jessica_id, 'CT Scans'),
+(@jessica_id, 'Radiology Reports'),
+(@jessica_id, 'X-Rays');
+
+-- 👨 John Doe
+INSERT INTO patients
+(name, gender, age, profile_picture, date_of_birth, phone_number, emergency_contact, insurance_type)
+VALUES
+('John Doe', 'Male', 42, 'https://i.pravatar.cc/150?img=12', '1983-05-12', '(415) 555-6789', '(415) 555-0000', 'BlueSky Insurance');
+
+SET @john_id = LAST_INSERT_ID();
+
+INSERT INTO diagnosis_history
+(patient_id, month, year, systolic_value, systolic_level, diastolic_value, diastolic_level, heart_rate, respiratory_rate, temperature)
+VALUES
+(@john_id, 'March', 2024, 120, 'Normal', 80, 'Normal', 70, 18, 98.4);
+
+INSERT INTO diagnostic_list (patient_id, name, description, status)
+VALUES
+(@john_id, 'Seasonal Allergy', 'Mild allergic rhinitis', 'Stable');
+
+INSERT INTO lab_results (patient_id, result_name)
+VALUES
+(@john_id, 'CBC'),
+(@john_id, 'Urinalysis');
+
+-- =========================================================
+-- 7️⃣ Verification Queries
+-- =========================================================
+SELECT * FROM patients;
+SELECT * FROM diagnosis_history;
+SELECT * FROM diagnostic_list;
+SELECT * FROM lab_results;
+
+-- =========================================================
+-- 8️⃣ Useful Maintenance Queries
+-- =========================================================
+-- View all patient IDs with names
+SELECT id, name, age FROM patients;
+
+-- Delete a specific patient by ID
+-- DELETE FROM patients WHERE id = 2;
+
+-- Remove all data (truncate)
+-- TRUNCATE TABLE diagnosis_history;
+-- TRUNCATE TABLE diagnostic_list;
+-- TRUNCATE TABLE lab_results;
+-- TRUNCATE TABLE patients;
+
+-- =========================================================
+-- END OF SCRIPT
+-- =========================================================
